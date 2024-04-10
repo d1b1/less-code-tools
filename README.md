@@ -11,3 +11,4 @@ for thinking about non-code-centric approaches to getting a client growth-ready.
 [Search Database](https://less-code.stephansmith.solutions)
 
 ![Search UI](/assets/screenshot-a.png)
+
