@@ -1,17 +1,24 @@
-name: Deploy to Render
+# .github/workflows/ci.yml
 
 on:
-  push:
-    branches:
-      - main  # Trigger the workflow on push events to the main branch.
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Trigger Render Deployment
-        run: curl -X POST -H "Content-Type: application/json" -d '{}' `https://api.render.com/deploy/${{ secrets.RENDER_WEBHOOK }}`
+    pull_request:
+    push:
+      branches: [main]
+  
+  jobs:
+    ci:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        - name: Test
+          run: |
+            npm install
+            npm run test
+  
+        - name: Deploy
+          # Only run this step if the branch is main
+          if: github.ref == 'refs/heads/main'
+          env:
+            deploy_url: ${{ secrets.RENDER_WEBHOOK }}
+          run: |
+            curl "$deploy_url"
