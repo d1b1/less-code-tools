@@ -14,9 +14,16 @@ em {
   font-style: normal;
 }
 
+.ais-Hits-item img {
+  float: left;
+  margin-right: 20px;
+  padding: 4px !important;
+}
+
 .compLogo { 
   float: left;
   margin-bottom: 10px;
+  border: 1px solid #DFDFDF;
 }
 
 .header {

@@ -59,8 +59,6 @@ base(tableName).select({
           let ext = record.fields.logo[0].type.split('/')[1];
           let savePath = `./logos/${record.fields.objectID}.${ext}`;
           record.fields.logo = `${record.fields.objectID}.${ext}`;
-
-          // console.log(record.fields.logo)
           p.push(downloadImage(url, savePath));
         }
 
@@ -70,7 +68,7 @@ base(tableName).select({
  
     await Promise.all(p);
 
-    // Fetch the next page of records, if any
+    // Fetch the next page of records, if any.
     fetchNextPage();
     
 }, (err) => {
