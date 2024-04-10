@@ -190,7 +190,7 @@ function Hit({ hit }: HitProps) {
       <div className="row">
         <div className="col-7">
 
-          <a href={`${hit['url']}`} target="_blank">
+          <a href={`${hit.url}`} target="_blank">
             <ImageWithFallback src={hit.logo} width="150" className="compLogo" alt={hit.name} />
           </a>
 
@@ -214,7 +214,7 @@ function Hit({ hit }: HitProps) {
               <small >
                 Age: {hit.founded} (<YearsBetween year={hit.founded} /> ago),
                 &nbsp;
-                {hit['url'] && <a href={`${hit['url']}`} target="_blank">{hit['url']}</a>}
+                {hit['url'] && <a href={`${hit.url}`} target="_blank">{hit.url}</a>}
               </small>
 
             </div>
