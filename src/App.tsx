@@ -214,7 +214,7 @@ function Hit({ hit }: HitProps) {
               <small >
                 Age: {hit.founded} (<YearsBetween year={hit.founded} /> ago),
                 &nbsp;
-                {hit['url'] && <a href={`https://${hit['url']}`} target="_blank">https://{hit['url']}</a>}
+                {hit['url'] && <a href={`${hit['url']}`} target="_blank">{hit['url']}</a>}
               </small>
 
             </div>
