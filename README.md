@@ -1,22 +1,13 @@
-# Less Code Tools & Solutions
-This is a searchable UI for Techstars porfolio companies. The Techstars network has
-8k+ companies and 23k+ founders. It an untapped resource for early stage startups 
-looking for network related help.
+# 'Less-Code' Tools & Solutions
+A growing database of no-code, low-code vendors, tools and patterns. Startups
+have funding, staffing and time constraints. Finding the right tools to keep
+the march to revenue moving takes time and effort. This is my go-to resource
+for thinking about non-code-centric approaches to getting a client growth-ready.
 
-- Find Funded startups in your space.
-- Find Partners who are upstream or downstream.
-- Find Founders who will provide feedback.
-- Find and understand the investment themes (overtime) by market.
+- Find No-code solutions
+- Find new vs established.
+- Find by how much funding the solution has raised.
 
-![Reactjs-UI](/assets/screenshot-a.png)
+[Search Database](https://less-code.stephansmith.solutions)
 
-
-## Get started
-To run this project locally, install the dependencies and run the local server:
-
-```sh
-npm install
-npm start
-```
-
-<img src="assets/screenshot-b.png" height="100">
+![Search UI](/assets/screenshot-a.png)
