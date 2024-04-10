@@ -1,4 +1,4 @@
-name: Continuous Integration and Deployment
+name: Render.com Deploy
 
 on:
   pull_request: {}
