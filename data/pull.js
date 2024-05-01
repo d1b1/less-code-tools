@@ -1,8 +1,16 @@
-// Import the Airtable package
+require('dotenv').config();
 const Airtable = require('airtable');
 const fs = require('fs');
 const axios = require('axios');
 const _ = require('lodash');
+const algoliasearch = require('algoliasearch');
+
+// Initialize Airtable client.
+const airTableBase = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID);
+
+// Initialize the Algolia client.
+const client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_ADMIN_API_KEY);
+const AlgoliaIndex = client.initIndex(process.env.ALGOLIA_INDEX_NAME);
 
 const downloadImage = async (url, filePath) => {
   try {
@@ -25,30 +33,17 @@ const downloadImage = async (url, filePath) => {
   }
 };
 
-// const imageUrl = 'https://example.com/image.jpg';
-// const savePath = './downloaded_image.jpg';
-
-// downloadImage(imageUrl, savePath)
-//   .then(() => console.log('Image downloaded successfully'))
-//   .catch((error) => console.error('Error downloading image:', error));
-
-  
-// Configure Airtable with your API key and base ID
-const apiKey = 'patJ8x7xdGTz7NjC3.a6592bb96792035dd252b68400aef1ebf715d3cdebb4889c90b70650cacf247a';
-const baseId = 'appBE9zWoLBRpXaoX';
-const tableName = 'tbln3ndJt0r3lom2C';
-
 // Initialize Airtable
-const base = new Airtable({ apiKey: apiKey }).base(baseId);
-
 const data = [];
 
 // Fetch records from the specified table
-base(tableName).select({
+airTableBase(process.env.AIRTABLE_TABLE_NAME).select({
     // Add any filters or sorting options here
 }).eachPage(async (records, fetchNextPage) => {
 
     var p = []
+    var ap = []
+
     // Process the records
     records.forEach((record) => {
        record.fields = _.mapKeys(record.fields, (v, k) => _.camelCase(k));
@@ -62,10 +57,18 @@ base(tableName).select({
           p.push(downloadImage(url, savePath));
         }
 
-       // console.log(record.fields)
+        ap.push(record.fields)
         data.push(record.fields);
     });
  
+    // Force the index to run.
+    await AlgoliaIndex.saveObjects(ap).then(({ objectIDs }) => {
+      console.log('Data pushed to Algolia:', objectIDs);
+    }).catch(err => {
+      console.error('Error pushing data to Algolia:', err);
+    });
+
+    // Force the save to run.
     await Promise.all(p);
 
     // Fetch the next page of records, if any.

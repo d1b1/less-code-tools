@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import fallbackImage from './assets/no-logo.png';
 import fallbackAvatarImage from './assets/missing-avatar.jpeg';
-import crunchbaseLogo from './assets/crunchbase.png';
-import linkedInLogo from './assets/linkedIn.png';
-import twitterLogo from './assets/twitter.png';
 import GitHubButton from 'react-github-btn';
 
 import {
@@ -15,14 +12,10 @@ import {
   Pagination,
   SearchBox,
   RefinementList,
-  HitsPerPage,
   Stats
 } from 'react-instantsearch';
 
-import { Panel } from './Panel';
-
 import type { Hit } from 'instantsearch.js';
-
 import './App.css';
 
 const searchClient = algoliasearch(
@@ -87,14 +80,14 @@ export function App() {
                 <h4>
                   Known for:
                 </h4>
-                <RefinementList searchable="true" searchablePlaceholder="Enter a feature..." attribute="services" limit="5" />
+                <RefinementList searchable="true" searchablePlaceholder="Enter a feature..." attribute="services" limit="10" />
               </div>
 
               <div className="filter-el">
                 <h4>
                   Type of Solution:
                 </h4>
-                <RefinementList searchable="true" attribute="type" searchablePlaceholder="Enter type..." limit="5" />
+                <RefinementList searchable="true" attribute="type" searchablePlaceholder="Enter type..." limit="10" />
               </div>
 
               <div className="filter-el">
@@ -134,14 +127,10 @@ export function App() {
 
             </div>
             <div className="col-md-9 p-4">
-
               <SearchBox placeholder="Enter a name..." className="searchbox" />
-
               <Hits hitComponent={Hit} />
-
               <br />
               <Pagination padding={2} />
-
             </div>
           </div>
         </div>
@@ -162,7 +151,6 @@ function ImageWithFallback({ src, alt, classname, ...props }) {
   };
 
   const imageUrl = base + '/' + src;
-
   return <img src={imageUrl} className={classname} alt={alt} onError={handleError} {...props} />;
 }
 
@@ -177,7 +165,6 @@ function AvatarWithFallback({ src, alt, classname, ...props }) {
 const YearsBetween = ({ year }) => {
   const currentYear = new Date().getFullYear();
   const yearsBetween = currentYear - year;
-
   return <span>{yearsBetween} years</span>;
 };
 
@@ -189,7 +176,6 @@ function Hit({ hit }: HitProps) {
     <article>
       <div className="row">
         <div className="col-7">
-
           <a href={`${hit.url}`} target="_blank">
             <ImageWithFallback src={hit.logo} width="150" className="compLogo" alt={hit.name} />
           </a>
@@ -203,7 +189,6 @@ function Hit({ hit }: HitProps) {
           </p>
 
           <p>
-
             <div className="m-2">
               {(hit.industry_vertical || []).map((item, index) => (
                 <span key={index} className="badge bg-secondary me-1">
@@ -219,10 +204,8 @@ function Hit({ hit }: HitProps) {
 
             </div>
           </p>
-
         </div>
         <div className="col-5">
-
           <table className="table table-sm table-striped">
             <tbody>
               <tr>
@@ -267,7 +250,6 @@ function Hit({ hit }: HitProps) {
               </tr>
             </tbody>
           </table>
-
         </div>
       </div>
     </article>
