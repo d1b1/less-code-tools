@@ -86,15 +86,16 @@ app.get('/import', (req, res) => {
             console.error('Error fetching records:', err);
         }
 
-        console.log('All done. You have a new output file.');
+        console.log(`All done. Processed ${data.length} records.`);
+        res.send(`All done. Processed ${data.length} records.`);
 
-        fs.writeFile('./output.json', JSON.stringify(data,), (err) => {
-            if (err) {
-                console.error('Error writing file:', err);
-            } else {
-                console.log('JSON data saved to', data.length);
-            }
-        });
+        // fs.writeFile('./output.json', JSON.stringify(data,), (err) => {
+        //     if (err) {
+        //         console.error('Error writing file:', err);
+        //     } else {
+        //         console.log('JSON data saved to', data.length);
+        //     }
+        // });
     });
 
 
