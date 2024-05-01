@@ -11,7 +11,7 @@ require('dotenv').config();
 app.get('/import', (req, res) => {
 
     console.log('Starting import');
-    
+
     // Initialize Airtable client.
     const airTableBase = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID);
 
@@ -61,7 +61,7 @@ app.get('/import', (req, res) => {
                 let ext = record.fields.logo[0].type.split('/')[1];
                 let savePath = `./logos/${record.fields.objectID}.${ext}`;
                 record.fields.logo = `${record.fields.objectID}.${ext}`;
-                p.push(downloadImage(url, savePath));
+                // p.push(downloadImage(url, savePath));
             }
 
             ap.push(record.fields)
