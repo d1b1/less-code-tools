@@ -80,7 +80,7 @@ export function App() {
                 <h4>
                   Known for:
                 </h4>
-                <RefinementList searchable="true" searchablePlaceholder="Enter a feature..." attribute="services" limit="10" />
+                <RefinementList searchable="true" searchablePlaceholder="Enter a feature..." attribute="services" limit="20" />
               </div>
 
               <div className="filter-el">
