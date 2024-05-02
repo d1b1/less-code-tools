@@ -4,6 +4,19 @@ const fs = require('fs');
 const axios = require('axios');
 const _ = require('lodash');
 const algoliasearch = require('algoliasearch');
+const { imageUpload } = require('../scratch/index.js');
+const async = require('async');
+
+// create a queue object with concurrency 2
+var ghQueue = async.queue(function(task, callback) {
+  console.log('hello ' + task.name);
+  storeImage(task.url, 'less-code/logos', task.name).then(callback);
+}, 1);
+
+// assign a callback
+ghQueue.drain(function() {
+  console.log('all items have been processed');
+});
 
 // Initialize Airtable client.
 const airTableBase = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID);
@@ -12,6 +25,7 @@ const airTableBase = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base
 const client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_ADMIN_API_KEY);
 const AlgoliaIndex = client.initIndex(process.env.ALGOLIA_INDEX_NAME);
 
+/* Old function that downloaded for local use. */
 const downloadImage = async (url, filePath) => {
   try {
     const response = await axios({
@@ -33,6 +47,28 @@ const downloadImage = async (url, filePath) => {
   }
 };
 
+async function downloadImageV2(url) {
+  const response = await axios({
+    url: url,
+    responseType: 'arraybuffer'
+  });
+
+  return Buffer.from(response.data, 'binary').toString('base64');
+}
+
+async function storeImage(url, path, name) {
+  try {
+    console.log('Getting', path, name);
+    const base64Image = await downloadImageV2(url);
+
+    console.log('Storing in Github')
+    return await imageUpload(base64Image, path, name);
+
+  } catch (error) {
+    console.error('Error in executing image operations:', error);
+  }
+}
+
 // Initialize Airtable
 const data = [];
 
@@ -45,6 +81,7 @@ airTableBase(process.env.AIRTABLE_TABLE_NAME).select({
     var ap = []
 
     // Process the records
+
     records.forEach((record) => {
        record.fields = _.mapKeys(record.fields, (v, k) => _.camelCase(k));
        record.fields.objectID = record.id;
@@ -54,7 +91,13 @@ airTableBase(process.env.AIRTABLE_TABLE_NAME).select({
           let ext = record.fields.logo[0].type.split('/')[1];
           let savePath = `./logos/${record.fields.objectID}.${ext}`;
           record.fields.logo = `${record.fields.objectID}.${ext}`;
-          p.push(downloadImage(url, savePath));
+
+          // p.push(downloadImage(url, savePath));
+          // uploadImage(imagePath, 'less-code/logos', 'testFile111.png');
+
+          ghQueue.push({ url: url, path: 'less-code/logos', name: `${record.fields.objectID}.${ext}`});
+
+          // p.push(storeImage(url, 'less-code/logos', `${record.fields.objectID}.${ext}`));
         }
 
         ap.push(record.fields)

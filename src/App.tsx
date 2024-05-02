@@ -143,14 +143,16 @@ type HitProps = {
   hit: Hit;
 };
 
-const base = 'https://raw.githubusercontent.com/d1b1/less-code-tools/master/data/logos';
+// Uses the new github driven CDN.
+const base = 'https://less-code.twic.pics/logos-v2';
 
+// This can be removed as twicPic supports failback images.
 function ImageWithFallback({ src, alt, classname, ...props }) {
   const handleError = (e) => {
     e.target.src = fallbackImage;
   };
 
-  const imageUrl = base + '/' + src;
+  const imageUrl = base + '/' + src + '';
   return <img src={imageUrl} className={classname} alt={alt} onError={handleError} {...props} />;
 }
 
@@ -169,8 +171,6 @@ const YearsBetween = ({ year }) => {
 };
 
 function Hit({ hit }: HitProps) {
-
-  const base = 'https://raw.githubusercontent.com/d1b1/less-code-tools/master/data/logos';
 
   return (
     <article>

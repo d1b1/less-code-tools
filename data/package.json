@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "airtable": "^0.12.2",
+    "async": "^3.2.5",
     "axios": "^1.6.8"
   }
 }
