@@ -1,22 +1,16 @@
 const { Octokit } = require("@octokit/rest");
-const fs = require("fs");
-const path = require("path");
 
-// Configure your personal access token, repository details, and file details
-const octokit = new Octokit({ auth: `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` });
+// Setup the github octakit with an access token.
+const octokit = new Octokit({ auth: process.env.GITHUB_PERSONAL_ACCESS_TOKEN });
 
-const imagePath = path.join(__dirname, 'testImage.png'); 
-
-// Read image file and convert to base64
-// const content = fs.readFileSync(imagePath, 'base64');
+const repo = 'fCTO-CDN';
+const owner = 'd1b1';
+const branch = 'main'
 
 // Function to upload the image
 async function uploadImage(content, destPath, destName) {
     try {
-
-        const repo = 'fCTO-CDN';
-        const owner = 'd1b1';
-        const branch = 'main'
+        // Se the message and the content path.
         const message = `Added Image for ${destPath}`;
         const contentPath = `${destPath}/${destName}`;
 
@@ -77,13 +71,13 @@ async function uploadImage(content, destPath, destName) {
         console.log('Image uploaded successfully!');
 
         return;
-        
+
     } catch (error) {
         console.error('Error uploading image:', error);
     }
 }
 
-// uploadImage(imagePath, 'less-code/logos', 'testFile111.png');
+// uploadImage(content, 'less-code/logos', 'testFile111.png');
 
 exports.imageUpload = uploadImage
 
