@@ -3,6 +3,7 @@ import algoliasearch from 'algoliasearch/lite';
 import fallbackImage from './assets/no-logo.png';
 import fallbackAvatarImage from './assets/missing-avatar.jpeg';
 import GitHubButton from 'react-github-btn';
+import LegendModal from './Modal_Legend';
 
 import {
   Configure,
@@ -44,12 +45,39 @@ const future = { preserveSharedStateOnUnmount: true };
 export function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // localStorage.setItem('alreadySeenModal', 'no');
+
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeTheModal = () => {
+    localStorage.setItem('alreadySeenModal', 'yes');
+    setIsModalOpen(false);
+  };
+
+  try {
+    setTimeout(() => {
+      const alreadySeenModal = localStorage.getItem('alreadySeenModal') || 'no';
+      if (alreadySeenModal === 'no') {
+        setIsModalOpen(true);
+      }
+    }, 1000);
+  } catch (err) {
+    console.log('Small error')
+  }
+
   return (
     <div>
+
+      <LegendModal
+        isOpen={isModalOpen}
+        onRequestClose={() => closeTheModal()}
+      />
 
       <InstantSearch
         searchClient={searchClient}
@@ -60,13 +88,12 @@ export function App() {
 
         <header className="header">
           <h1 className="header-title">
-            Less-Code Tools & Patterns
+            Low Code Cookbook
             <Stats />
           </h1>
-          <div className="gh-btn">
-
-            <GitHubButton href="https://github.com/d1b1/less-code-tools" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" data-show-count="true" aria-label="Star d1b1/techstar-companies on GitHub">Star</GitHubButton>
-          </div>
+          <button className="btn btn-sm btn-outline-light avatar-btn headerBtn" onClick={openModal}>
+            And Why?
+          </button>
         </header>
 
         <div className="container-fluid">
@@ -78,9 +105,9 @@ export function App() {
 
               <div className="filter-el">
                 <h4>
-                  Known for:
+                  Stack Need:
                 </h4>
-                <RefinementList searchable="true" searchablePlaceholder="Enter a feature..." attribute="services" limit="20" />
+                <RefinementList searchable="true" operator="and" searchablePlaceholder="Enter a feature..." attribute="services" limit="20" />
               </div>
 
               <div className="filter-el">
@@ -97,12 +124,12 @@ export function App() {
                 <RefinementList attribute="founded" />
               </div>
 
-              <div className="filter-el">
+              {/* <div className="filter-el">
                 <h4>
                   Total Funds Raised:
                 </h4>
                 <RefinementList attribute="totalFunding" />
-              </div>
+              </div> */}
 
               <div className="filter-el">
                 <h4>

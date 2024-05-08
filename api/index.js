@@ -61,7 +61,6 @@ app.get('/import', (req, res) => {
                 let ext = record.fields.logo[0].type.split('/')[1];
                 let savePath = `./logos/${record.fields.objectID}.${ext}`;
                 record.fields.logo = `${record.fields.objectID}.${ext}`;
-                // p.push(downloadImage(url, savePath));
             }
 
             ap.push(record.fields)

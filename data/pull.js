@@ -4,18 +4,24 @@ const fs = require('fs');
 const axios = require('axios');
 const _ = require('lodash');
 const algoliasearch = require('algoliasearch');
-const { imageUpload } = require('../scratch/index.js');
+// const { imageUpload } = require('../scratch/index.js');
 const async = require('async');
+
+// Setup the github octakit with an access token.
+const { Octokit } = require("@octokit/rest");
+const octokit = new Octokit({ auth: process.env.GITHUB_PERSONAL_ACCESS_TOKEN });
+const repo = 'fCTO-CDN';
+const owner = 'd1b1';
+const branch = 'main'
 
 // create a queue object with concurrency 2
 var ghQueue = async.queue(function(task, callback) {
-  console.log('hello ' + task.name);
   storeImage(task.url, 'less-code/logos', task.name).then(callback);
 }, 1);
 
 // assign a callback
 ghQueue.drain(function() {
-  console.log('all items have been processed');
+  console.log("\nAll Airtable Records have been processed.");
 });
 
 // Initialize Airtable client.
@@ -25,29 +31,7 @@ const airTableBase = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base
 const client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_ADMIN_API_KEY);
 const AlgoliaIndex = client.initIndex(process.env.ALGOLIA_INDEX_NAME);
 
-/* Old function that downloaded for local use. */
-const downloadImage = async (url, filePath) => {
-  try {
-    const response = await axios({
-      url,
-      method: 'GET',
-      responseType: 'stream',
-    });
-
-    const writer = fs.createWriteStream(filePath);
-
-    response.data.pipe(writer);
-
-    return new Promise((resolve, reject) => {
-      writer.on('finish', resolve);
-      writer.on('error', reject);
-    });
-  } catch (error) {
-    console.error('Error downloading the image:', error);
-  }
-};
-
-async function downloadImageV2(url) {
+async function downloadImage(url) {
   const response = await axios({
     url: url,
     responseType: 'arraybuffer'
@@ -58,12 +42,9 @@ async function downloadImageV2(url) {
 
 async function storeImage(url, path, name) {
   try {
-    console.log('Getting', path, name);
-    const base64Image = await downloadImageV2(url);
+    const base64Image = await downloadImage(url);
 
-    console.log('Storing in Github')
-    return await imageUpload(base64Image, path, name);
-
+    return await imageUploadToRepo(base64Image, path, name);
   } catch (error) {
     console.error('Error in executing image operations:', error);
   }
@@ -81,7 +62,6 @@ airTableBase(process.env.AIRTABLE_TABLE_NAME).select({
     var ap = []
 
     // Process the records
-
     records.forEach((record) => {
        record.fields = _.mapKeys(record.fields, (v, k) => _.camelCase(k));
        record.fields.objectID = record.id;
@@ -92,12 +72,7 @@ airTableBase(process.env.AIRTABLE_TABLE_NAME).select({
           let savePath = `./logos/${record.fields.objectID}.${ext}`;
           record.fields.logo = `${record.fields.objectID}.${ext}`;
 
-          // p.push(downloadImage(url, savePath));
-          // uploadImage(imagePath, 'less-code/logos', 'testFile111.png');
-
           ghQueue.push({ url: url, path: 'less-code/logos', name: `${record.fields.objectID}.${ext}`});
-
-          // p.push(storeImage(url, 'less-code/logos', `${record.fields.objectID}.${ext}`));
         }
 
         ap.push(record.fields)
@@ -133,3 +108,72 @@ airTableBase(process.env.AIRTABLE_TABLE_NAME).select({
     });
 });
 
+// Function to upload the image
+async function imageUploadToRepo(content, destPath, destName) {
+    try {
+        // Se the message and the content path.
+        const message = `Added Image for ${destPath}`;
+        const contentPath = `${destPath}/${destName}`;
+
+        // Get the reference for the branch
+        const ref = await octokit.rest.git.getRef({
+            owner,
+            repo,
+            ref: `heads/${branch}`
+        });
+
+        const sha = ref.data.object.sha;
+
+        // Create blob
+        const blob = await octokit.rest.git.createBlob({
+            owner,
+            repo,
+            content,
+            encoding: 'base64'
+        });
+
+        // Get the latest commit
+        const commit = await octokit.rest.git.getCommit({
+            owner,
+            repo,
+            commit_sha: sha
+        });
+
+        // Create tree
+        const tree = await octokit.rest.git.createTree({
+            owner,
+            repo,
+            tree: [{
+                path: contentPath,
+                mode: '100644',
+                type: 'blob',
+                sha: blob.data.sha
+            }],
+            base_tree: commit.data.tree.sha
+        });
+
+        // Create new commit
+        const newCommit = await octokit.rest.git.createCommit({
+            owner,
+            repo,
+            message,
+            tree: tree.data.sha,
+            parents: [commit.data.sha]
+        });
+
+        // Update branch reference
+        await octokit.rest.git.updateRef({
+            owner,
+            repo,
+            ref: `heads/${branch}`,
+            sha: newCommit.data.sha
+        });
+
+        console.log('Image uploaded successfully!');
+
+        return;
+
+    } catch (error) {
+        console.error('Error uploading image:', error);
+    }
+}
