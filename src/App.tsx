@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import fallbackImage from './assets/no-logo.png';
 import fallbackAvatarImage from './assets/missing-avatar.jpeg';
+import bannerImage from './assets/banner.jpeg';
 import GitHubButton from 'react-github-btn';
 import LegendModal from './Modal_Legend';
 

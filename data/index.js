@@ -66,6 +66,10 @@ airTableBase(process.env.AIRTABLE_TABLE_NAME).select({
        record.fields = _.mapKeys(record.fields, (v, k) => _.camelCase(k));
        record.fields.objectID = record.id;
 
+       if (record.fields.services === undefined || record.fields.services.length === 0) {
+          record.fields.services = [ 'Actung' ]
+       }
+
        if (record.fields.logo && record.fields.logo.length > 0) {
           let url = record.fields.logo[0].url
           let ext = record.fields.logo[0].type.split('/')[1];
