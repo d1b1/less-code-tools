@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import fallbackImage from './assets/no-logo.png';
 import fallbackAvatarImage from './assets/missing-avatar.jpeg';
-import bannerImage from './assets/banner.jpeg';
-import GitHubButton from 'react-github-btn';
 import LegendModal from './Modal_Legend';
 
 import {
@@ -14,6 +12,7 @@ import {
   Pagination,
   SearchBox,
   RefinementList,
+  CurrentRefinements,
   Stats
 } from 'react-instantsearch';
 
@@ -169,7 +168,8 @@ export function App() {
 
             </div>
             <div className="col-md-9 p-4">
-              <SearchBox placeholder="Enter a name..." className="searchbox" />
+              <SearchBox placeholder="Stack problem..." className="searchbox" />
+              <CurrentRefinements />
               <Hits hitComponent={Hit} />
               <br />
               <Pagination padding={2} />
@@ -238,13 +238,15 @@ function Hit({ hit }: HitProps) {
                   {item}
                 </span>
               ))}
-
               <small >
                 Age: {hit.founded} (<YearsBetween year={hit.founded} /> ago),
                 &nbsp;
                 {hit['url'] && <a href={`${hit.url}`} target="_blank">{hit.url}</a>}
               </small>
-
+              <br/>
+              <small>
+                Services: {hit.services.join(', ')} {(hit.secondaryServices || []).join(', ')}
+              </small>
             </div>
           </p>
         </div>

@@ -181,11 +181,11 @@ em {
   position: relative;
 }
 
-button {
+/* button {
   position: absolute;
   top: 10px;
   right: 10px;
-}
+} */
 
 .avatar:hover { 
   background-color: white;
@@ -226,4 +226,41 @@ h4 {
 
 .card-body {
   min-height: 300px;
+}
+
+.ais-CurrentRefinements-delete {
+  margin-top: 2px;
+}
+
+.ais-CurrentRefinements-item {
+  border-radius: 4px;
+  padding: 6px;
+}
+
+.ais-CurrentRefinements-label {
+  font-weight: bold;
+}
+
+.ais-CurrentRefinements-list {
+  margin-bottom: 10px;
+}
+
+.ais-ClearRefinements { 
+  max-width: 150px;
+}
+
+.ais-ClearRefinements-button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #e0e0e0;
+  border: none;
+  cursor: pointer;
+}
+
+.ais-ClearRefinements-button:hover {
+  background-color: #d0d0d0;
+}
+
+.searchbox {
+  margin-bottom: 0.5rem;
 }
