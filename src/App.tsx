@@ -21,8 +21,8 @@ import type { Hit } from 'instantsearch.js';
 import './App.css';
 
 const searchClient = algoliasearch(
-  'UD1VE6KV0J',
-  '4942d21dd5c6d932f63d97966c40d9d0'
+  'C0Z1GERTE7',
+  '3cc4a85c3098596586c821150e8dc563'
 );
 
 function toTitleCase(str) {
@@ -82,7 +82,7 @@ export function App() {
 
       <InstantSearch
         searchClient={searchClient}
-        indexName="Less-Code-Tools"
+        indexName="Cookbook"
         future={future}
         routing={true}
       >
@@ -173,6 +173,7 @@ type HitProps = {
 
 // Uses the new github driven CDN.
 const base = 'https://less-code.twic.pics/logos-v2';
+// const base = 'https://raw.githubusercontent.com/d1b1/less-code-tools/master/data/logos/recEmdrByNBcnq3cj.png';
 
 // This can be removed as twicPic supports failback images.
 function ImageWithFallback({ src, alt, classname, ...props }) {

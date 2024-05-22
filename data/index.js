@@ -31,6 +31,7 @@ const airTableBase = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base
 const client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_ADMIN_API_KEY);
 const AlgoliaIndex = client.initIndex(process.env.ALGOLIA_INDEX_NAME);
 
+console.log(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_INDEX_NAME)
 async function downloadImage(url) {
   const response = await axios({
     url: url,
@@ -76,7 +77,7 @@ airTableBase(process.env.AIRTABLE_TABLE_NAME).select({
           let savePath = `./logos/${record.fields.objectID}.${ext}`;
           record.fields.logo = `${record.fields.objectID}.${ext}`;
 
-          ghQueue.push({ url: url, path: 'less-code/logos', name: `${record.fields.objectID}.${ext}`});
+          // ghQueue.push({ url: url, path: 'less-code/logos', name: `${record.fields.objectID}.${ext}`});
         }
 
         ap.push(record.fields)
@@ -91,7 +92,7 @@ airTableBase(process.env.AIRTABLE_TABLE_NAME).select({
     });
 
     // Force the save to run.
-    await Promise.all(p);
+    // await Promise.all(p);
 
     // Fetch the next page of records, if any.
     fetchNextPage();
