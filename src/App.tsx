@@ -120,6 +120,20 @@ export function App() {
 
               <div className="filter-el">
                 <h4>
+                  Under the Hood:
+                </h4>
+                <RefinementList searchable="true" attribute="secondaryServices" searchablePlaceholder="Enter type..." limit="10" />
+              </div>
+
+              <div className="filter-el">
+                <h4>
+                  Status:
+                </h4>
+                <RefinementList attribute="reviewStatus"/>
+              </div>
+
+              <div className="filter-el">
+                <h4>
                   Year Founded:
                 </h4>
                 <RefinementList attribute="founded" />
