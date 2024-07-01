@@ -77,7 +77,7 @@ airTableBase(process.env.AIRTABLE_TABLE_NAME).select({
           let savePath = `./logos/${record.fields.objectID}.${ext}`;
           record.fields.logo = `${record.fields.objectID}.${ext}`;
 
-          // ghQueue.push({ url: url, path: 'less-code/logos', name: `${record.fields.objectID}.${ext}`});
+          ghQueue.push({ url: url, path: 'less-code/logos', name: `${record.fields.objectID}.${ext}`});
         }
 
         ap.push(record.fields)

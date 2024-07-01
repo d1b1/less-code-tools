@@ -55,19 +55,19 @@ const CustomModal = ({ isOpen, onRequestClose, content }) => (
                     Code costs more. Code takes longer. Teams are needed to support.
                 </p>
 
-                <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-                    <div class="col">
-                        <div class="card mb-4 rounded-3 shadow-sm border-primary">
-                            <div class="card-header py-3 text-bg-primary border-primary">
-                                <h4 class="my-0 fw-normal">"No Code"</h4>
+                <div className="row row-cols-1 row-cols-md-3 mb-3 text-center">
+                    <div className="col">
+                        <div className="card mb-4 rounded-3 shadow-sm border-primary">
+                            <div className="card-header py-3 text-bg-primary border-primary">
+                                <h4 className="my-0 fw-normal">"No Code"</h4>
                             </div>
-                            <div class="card-body">
+                            <div className="card-body">
                                 <p>
                                     This category denotes a solution, pattern or library that offers a pure
                                     no-code experience. If the primary use case is code-less, then it gets this
                                     status, event if other features can utilize some code.
                                 </p>
-                                <ul class="list-unstyled mt-3 mb-4">
+                                <ul className="list-unstyled mt-3 mb-4">
                                     <li>100% code free solution</li>
                                     <li>Works with other low-code options.</li>
                                     <li>Make Devs mad.</li>
@@ -76,19 +76,19 @@ const CustomModal = ({ isOpen, onRequestClose, content }) => (
                             </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="card mb-4 rounded-3 shadow-sm">
-                            <div class="card-header py-3">
-                                <h4 class="my-0 fw-normal">"Low Code"</h4>
+                    <div className="col">
+                        <div className="card mb-4 rounded-3 shadow-sm">
+                            <div className="card-header py-3">
+                                <h4 className="my-0 fw-normal">"Low Code"</h4>
                             </div>
-                            <div class="card-body">
+                            <div className="card-body">
                                 <p>
                                     This category denotes solutions that lower the overall volume of code
                                     in a given solution. So a library like Platformatic, would be a low-code
                                     solution. This is reserved for solutions that need a bit of code to customize
                                     or delivery.
                                 </p>
-                                <ul class="list-unstyled mt-3 mb-4">
+                                <ul className="list-unstyled mt-3 mb-4">
                                     <li>Some Code required.</li>
                                     <li>Makes developer feel better.</li>
                                     <li>Some switching costs</li>
@@ -97,12 +97,12 @@ const CustomModal = ({ isOpen, onRequestClose, content }) => (
                             </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="card mb-4 rounded-3 shadow-sm">
-                            <div class="card-header py-3">
-                                <h4 class="my-0 fw-normal">"Less Code"</h4>
+                    <div className="col">
+                        <div className="card mb-4 rounded-3 shadow-sm">
+                            <div className="card-header py-3">
+                                <h4 className="my-0 fw-normal">"Less Code"</h4>
                             </div>
-                            <div class="card-body">
+                            <div className="card-body">
                                 <p>
                                     This category is for solutions that support or enable
                                     the other two categories. Its a catch all.
@@ -110,7 +110,7 @@ const CustomModal = ({ isOpen, onRequestClose, content }) => (
                                     solutions can help transition a traditional tech team
                                     into new patterns.
                                 </p>
-                                <ul class="list-unstyled mt-3 mb-4">
+                                <ul className="list-unstyled mt-3 mb-4">
                                     <li>Healthy Code Required</li>
                                     <li>Developers are fine with it</li>
                                     <li>High Switching Cost</li>

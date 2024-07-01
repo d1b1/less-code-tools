@@ -11,11 +11,15 @@
     "serve": "node ./api/index.js"
   },
   "dependencies": {
+    "@radix-ui/react-slider": "^1.1.2",
     "algoliasearch": "4",
+    "bootstrap": "^5.3.3",
     "express": "^4.19.2",
     "react": "18.1.0",
+    "react-bootstrap": "^2.10.2",
     "react-dom": "18.1.0",
     "react-github-btn": "^1.4.0",
+    "react-icons": "^5.2.1",
     "react-instantsearch": "7.7.0",
     "react-modal": "^3.16.1"
   },
